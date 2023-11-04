@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 /* 
     Алгоритм функции вскрытия клеток:
@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
     если бомб нет, то вскрываем клетку и закидываем в стэк все соседние клетки
 */
 
-function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length, index, value, fieldOfBomb, setFieldOfBomb, fieldOfUI,  setFieldOfUI, start, setStart, lastClicked, setLastClicked, firstCell, setFirstCell}) {
+function Cell({cell_class, tool, bombCount, setBombCount, length, index, value, fieldOfBomb, setFieldOfBomb, fieldOfUI,  setFieldOfUI, start, setStart, lastClicked, setLastClicked, firstCell, setFirstCell}) {
 
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
@@ -32,7 +32,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
         }
         down.push(up[length-1] + length - 1)
 
-        if(lastClicked == 0){
+        if(lastClicked === 0){
             neighbors.push(fieldOfBomb[lastClicked + length].index)
             neighbors.push(fieldOfBomb[lastClicked + 1].index)
             neighbors.push(fieldOfBomb[lastClicked + length + 1].index)
@@ -46,7 +46,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             neighbors.push(fieldOfBomb[lastClicked - length + 1].index)
         }  
         
-        if(lastClicked == length * (length - 1)){
+        if(lastClicked === length * (length - 1)){
             neighbors.push(fieldOfBomb[lastClicked + 1].index)
             neighbors.push(fieldOfBomb[lastClicked - length].index)
             neighbors.push(fieldOfBomb[lastClicked - length + 1].index)
@@ -60,7 +60,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             neighbors.push(fieldOfBomb[lastClicked - length + 1].index)
         } 
 
-        if(lastClicked == length * length - 1){
+        if(lastClicked === length * length - 1){
             neighbors.push(fieldOfBomb[lastClicked - 1].index)
             neighbors.push(fieldOfBomb[lastClicked - length].index)
             neighbors.push(fieldOfBomb[lastClicked - length - 1].index)
@@ -74,7 +74,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             neighbors.push(fieldOfBomb[lastClicked + length - 1].index)
         } 
 
-        if(lastClicked == length - 1){
+        if(lastClicked === length - 1){
             neighbors.push(fieldOfBomb[lastClicked - 1].index)
             neighbors.push(fieldOfBomb[lastClicked + length].index)
             neighbors.push(fieldOfBomb[lastClicked + length - 1].index)
@@ -125,7 +125,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
         }
 
         for(let i = 0; i < length * length; i++) {
-            if(fieldOfBomb[i].value == null) {
+            if(fieldOfBomb[i].value === null) {
                 fieldOfBomb[i].value = 0
             }
         }
@@ -149,7 +149,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
         let count = 0
 
         for(let i = 0; i < neighbors.length; i++) {
-            if(fieldOfBomb[neighbors[i]].value == 1) {
+            if(fieldOfBomb[neighbors[i]].value === 1) {
                 count += 1
             }
         }
@@ -164,12 +164,12 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             let current_count_bomb = countNeighborsBomb(current)
             let current_neighbors = returnNeighbors(current)
 
-            if(current_count_bomb == 0) {
+            if(current_count_bomb === 0) {
                 fieldOfUI[current].value = null
                 fieldOfUI[current].status = 0
 
                 for(let i = 0; i < current_neighbors.length; i++) {
-                    if(fieldOfUI[current_neighbors[i]].status == 2) {
+                    if(fieldOfUI[current_neighbors[i]].status === 2) {
                         cellStack.push(current_neighbors[i])
                         fieldOfUI[current_neighbors[i]].status = 1;
                     }
@@ -194,20 +194,20 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
     }
 
     function setFlag() {
-        if(fieldOfUI[lastClicked].status == 2 && bombCount > 0) {
+        if(fieldOfUI[lastClicked].status === 2 && bombCount > 0) {
             fieldOfUI[lastClicked].value = 'F'
             fieldOfUI[lastClicked].status = 0
             setBombCount(bombCount - 1)
 
             let all_fill = 1
             for(let i = 0; i < length * length; i++) {
-                if(fieldOfUI[i].status == 2) {
+                if(fieldOfUI[i].status === 2) {
                     all_fill = 0
                     break
                 }
             }
 
-            if(all_fill == 1 && bombCount == 1) {
+            if(all_fill === 1 && bombCount === 1) {
                 setStart(3)
                 document.querySelector(".field_wrap").style.borderColor = "rgb(0, 255, 47)"
             }
@@ -219,7 +219,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             return;
         }
 
-        if(fieldOfUI[lastClicked].value == 'F') {
+        if(fieldOfUI[lastClicked].value === 'F') {
             fieldOfUI[lastClicked].value = null
             fieldOfUI[lastClicked].status = 2
             setBombCount(bombCount + 1)
@@ -234,7 +234,7 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
 
     function openCurrentCell() {
         //Если клетка не вскрыта
-        if(fieldOfUI[lastClicked].status == 2) {
+        if(fieldOfUI[lastClicked].status === 2) {
             //Пользователь тыкает не на бомбу
             if(fieldOfBomb[lastClicked].value != 1) {
                 //Рядом с ней есть бомбы
@@ -251,13 +251,13 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
 
                 let all_fill = 1
                 for(let i = 0; i < length * length; i++) {
-                    if(fieldOfUI[i].status == 2) {
+                    if(fieldOfUI[i].status === 2) {
                         all_fill = 0
                         break
                     }
                 }
 
-                if(all_fill == 1 && bombCount == 0) {
+                if(all_fill === 1 && bombCount === 0) {
                     setStart(3)
                     document.querySelector(".field_wrap").style.borderColor = "rgb(0, 255, 47)"
                 }
@@ -272,18 +272,18 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
                     //Если клетка не вскрыта
                     if(fieldOfUI[i].status != 0) {
                         //Под этой клеткой бомба
-                        if(fieldOfBomb[i].value == 1) {
+                        if(fieldOfBomb[i].value === 1) {
                             fieldOfUI[i].value = '*'
                             fieldOfUI[i].status = 0
 
-                            if(lastClicked == i) {
+                            if(lastClicked === i) {
                                 fieldOfUI[i].status = 3
                             }
                         }
                     }
                     //Если клетка вскрыта
-                    if(fieldOfUI[i].status == 0) {
-                         if(fieldOfUI[i].value == 'F' && fieldOfBomb[i].value != 1) {
+                    if(fieldOfUI[i].status === 0) {
+                         if(fieldOfUI[i].value === 'F' && fieldOfBomb[i].value != 1) {
                             fieldOfUI[i].status = 3
                          }
                     }
@@ -297,18 +297,18 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
     }
 
     function cellMouseDown() {
-        if(start == 0 || start == 1) {
+        if(start === 0 || start === 1) {
             document.getElementById(index).style.borderColor = "rgb(223, 223, 223)"
         }
         setLastClicked(index)
     }
 
     function cellMouseUp() {
-        if(start == 0) {
+        if(start === 0) {
             let cellStack = [];
             cellStack.push(lastClicked)
 
-            if(firstCell == null) {
+            if(firstCell === null) {
                 setFirstCell(lastClicked)
                 fillBombField()
             }
@@ -317,54 +317,54 @@ function Cell({cell_class, setCell_class, tool, bombCount, setBombCount, length,
             setStart(1)
         }
 
-        if(start == 1) {
-            if(tool == 'S') {
+        if(start === 1) {
+            if(tool === 'S') {
                 openCurrentCell()
             }
 
-            if(tool == 'F') {
+            if(tool === 'F') {
                 setFlag()
             }
         }
 
     }
 
-    if(fieldOfUI[index].status == 0) {
+    if(fieldOfUI[index].status === 0) {
         cell_class += ' pressed_cell'
         cell_class.replace(' nomal_cell', '')
     }
 
-    if(fieldOfUI[index].status == 2) {
+    if(fieldOfUI[index].status === 2) {
         cell_class.replace(' pressed_cell', '')
         cell_class += ' nomal_cell'
     }
 
-    if(fieldOfUI[index].status == 3) {
+    if(fieldOfUI[index].status === 3) {
         cell_class += ' fatal_bomb'
     }
 
-    if(value == 1) {
+    if(value === 1) {
         cell_class += ' n_1'
     }
-    if(value == 2) {
+    if(value === 2) {
         cell_class += ' n_2'
     }
-    if(value == 3) {
+    if(value === 3) {
         cell_class += ' n_3'
     }
-    if(value == 4) {
+    if(value === 4) {
         cell_class += ' n_4'
     }
-    if(value == 5) {
+    if(value === 5) {
         cell_class += ' n_5'
     }
-    if(value == 6) {
+    if(value === 6) {
         cell_class += ' n_6'
     }
-    if(value == 7) {
+    if(value === 7) {
         cell_class += ' n_7'
     }
-    if(value == 8) {
+    if(value === 8) {
         cell_class += ' n_8'
     }
 

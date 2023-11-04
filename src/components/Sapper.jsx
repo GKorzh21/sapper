@@ -10,6 +10,7 @@ function Sapper() {
     const [bombCount, setBombCount] = useState(50);
     const [cell_class, setCell_class] = useState('cell clear')
     const [seconds, setSeconds] = useState(0)
+    const [strTime, setStrTime] = useState('000')
     const length = 16
 
     function generateFieldBomb(length) {
@@ -42,7 +43,6 @@ function Sapper() {
             row.push(<Cell
                 key={i * length + j}
                 cell_class={cell_class}
-                setCell_class={setCell_class}
                 bombCount={bombCount}
                 setBombCount={setBombCount}
                 length={length}
@@ -70,16 +70,16 @@ function Sapper() {
     }
 
     const onKey = (event) => {
-        if (event.key === "c" || event.key === "с") {
-            if(tool == 'S') {
-                setTool('F')
-            }
-            if(tool == 'F') {
-                setTool('S')
+        if(start === 0 || start === 1) {
+            if (event.key === "c" || event.key === "с") {
+                if(tool == 'S') {
+                    setTool('F')
+                }
+                if(tool == 'F') {
+                    setTool('S')
+                }   
             }
         }
-
-        console.log('a')
     }
 
     useEffect(() => {
@@ -87,16 +87,16 @@ function Sapper() {
         return () => {
             document.removeEventListener("keydown", onKey)
         }
-    }, [])
+    }, [tool, start])
     
     return (
         <div className="game" >
             <div className="panel">
-                <Reset cell_class={cell_class} setCell_class={setCell_class} setTool={setTool} length={length} bombCount={bombCount} setBombCount={setBombCount} tool={tool} fieldOfBomb={fieldOfBomb} setFieldOfBomb={setFieldOfBomb} fieldOfUI={fieldOfUI} setFieldOfUI={setFieldOfUI} start={start} setStart={setStart} lastClicked={lastClicked} setLastClicked={setLastClicked} firstCell={firstCell} setFirstCell={setFirstCell}/>    
+                <Reset setSeconds={setSeconds} setStrTime={setStrTime} setCell_class={setCell_class} setTool={setTool} setBombCount={setBombCount} fieldOfBomb={fieldOfBomb} setFieldOfBomb={setFieldOfBomb} fieldOfUI={fieldOfUI} setFieldOfUI={setFieldOfUI} setStart={setStart} setLastClicked={setLastClicked} setFirstCell={setFirstCell}/>    
                 <div className="bomb_count">
                     {bombCount}
                 </div>
-                <Timer start={start} seconds={seconds} setSeconds={setSeconds}/>
+                <Timer strTime={strTime} setStrTime={setStrTime} start={start} seconds={seconds} setSeconds={setSeconds}/>
                 <Tool tool={tool} setTool={setTool}/>
             </div>
             <div className="field_wrap">

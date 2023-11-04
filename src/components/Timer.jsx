@@ -1,34 +1,36 @@
 import React from "react";
 import { useEffect } from "react";
 
-function Timer({start, seconds, setSeconds}) {
+function Timer({strTime, setStrTime, start, seconds, setSeconds}) {
     function getTime() {
-        let time = seconds
-        setSeconds(time + 1);
+        setSeconds(seconds + 1)
+
+        if(Math.floor(seconds / 10) === 0) {
+            setStrTime('00' + seconds)
+            return
+        }
+
+        if(Math.floor(seconds / 100) === 0) {
+            setStrTime('0' + seconds)
+            return
+        }
+
+        setStrTime('' + seconds)
     }
 
     useEffect(() => {
-        const interval = setInterval(() => getTime(), 1000);
-    
-        return () => clearInterval(interval);
-    }, []);
+        if(start === 1) {
+            const interval = setInterval(() => getTime(), 1000);    
+            return () => clearInterval(interval);
+        }
+    }, [seconds, start, strTime]);
 
 
-    if(start == 0) {
-        return (
-            <div className="timer">
-                00
-            </div>
-        );
-    }
-
-    if(start == 1) {
-        return (
-            <div className="timer">
-                {seconds}
-            </div>
-        );
-    }
+    return (
+        <div className="timer">
+            {strTime}
+        </div>
+    );
 }
 
 export default Timer
