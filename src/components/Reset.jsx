@@ -21,7 +21,7 @@ function Reset({ setSeconds, setStrTime, setCell_class, setBombCount, setTool, f
         setFirstCell(null)
         setLastClicked(0)
         setStrTime('000')
-        setSeconds(0)
+        setSeconds(1)
         setCell_class('cell clear')
         document.querySelector(".field_wrap").style.borderColor = "rgb(178, 178, 178)"
     }

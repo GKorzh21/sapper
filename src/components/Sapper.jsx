@@ -9,7 +9,7 @@ function Sapper() {
     const [firstCell, setFirstCell] = useState(null);
     const [bombCount, setBombCount] = useState(50);
     const [cell_class, setCell_class] = useState('cell clear')
-    const [seconds, setSeconds] = useState(0)
+    const [seconds, setSeconds] = useState(1)
     const [strTime, setStrTime] = useState('000')
     const length = 16
 
